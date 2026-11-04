@@ -4,41 +4,44 @@
         <p>Review your guests' orders before submitting.</p>
     </div>
 
-    <div class="summary">
-        <span>Total participants: {{ participants.length }}</span>
-        <strong>Total: {{ groupTotal | currency:'UAH':'symbol':'1.0-0' }}</strong>
-    </div>
+    <p *ngIf="loading">Loading group order...</p>
+    <p *ngIf="error" class="error">{{ error }}</p>
 
-    <div class="participant" *ngFor="let guest of participants">
-        <div class="participant-heading">
-            <h2>{{ guest.name }}</h2>
-            <span [class.submitted]="guest.submitted">
-                {{ guest.submitted ? 'Ready' : 'Not submitted' }}
-            </span>
+    <ng-container *ngIf="!loading && !error">
+        <div class="summary">
+            <span>Total participants: {{ participants.length }}</span>
+            <strong>Total: {{ groupTotal | currency:'UAH':'symbol':'1.0-0' }}</strong>
         </div>
 
-        <div class="dish" *ngFor="let item of guest.items">
-            <span>{{ item.name }} × {{ item.quantity }}</span>
-            <strong>{{ item.price * item.quantity | currency:'UAH':'symbol':'1.0-0' }}</strong>
+        <div class="participant" *ngFor="let guest of participants">
+            <div class="participant-heading">
+                <h2>{{ guest.name }}</h2>
+                <span [class.submitted]="guest.isSubmitted">
+                    {{ guest.isSubmitted ? 'Ready' : 'Not submitted' }}
+                </span>
+            </div>
+
+            <div class="dish" *ngFor="let item of guest.items">
+                <span>{{ item.dish.name }} × {{ item.quantity }}</span>
+                <strong>
+                    {{ item.dish.price * item.quantity | currency:'UAH':'symbol':'1.0-0' }}
+                </strong>
+            </div>
+
+            <div class="subtotal">
+                Subtotal:
+                <strong>{{ guest.total | currency:'UAH':'symbol':'1.0-0' }}</strong>
+            </div>
         </div>
 
-        <div class="subtotal">
-            Subtotal:
-            <strong>{{ participantTotal(guest) | currency:'UAH':'symbol':'1.0-0' }}</strong>
+        <div class="actions">
+            <p *ngIf="!canSubmit">
+                Waiting for all participants to submit their carts.
+            </p>
+
+            <button type="button" [disabled]="!canSubmit" (click)="submitGroupOrder()">
+                Submit Group Order
+            </button>
         </div>
-    </div>
-
-    <div class="actions">
-        <p *ngIf="!canSubmit && !groupSubmitted">
-            Waiting for all participants to submit their carts.
-        </p>
-
-        <p *ngIf="groupSubmitted" class="success">
-            Group order submitted successfully (demo mode).
-        </p>
-
-        <button type="button" [disabled]="!canSubmit" (click)="submitGroupOrder()">
-            {{ groupSubmitted ? 'Submitted' : 'Submit Group Order' }}
-        </button>
-    </div>
+    </ng-container>
 </section>

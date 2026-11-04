@@ -1,19 +1,11 @@
 
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-interface OrderItem {
-  name: string;
-  price: number;
-  quantity: number;
-}
-
-interface Participant {
-  id: string;
-  name: string;
-  submitted: boolean;
-  items: OrderItem[];
-}
+import { Component, OnInit, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import {
+  GroupOrdersService,
+  GroupParticipant,
+} from '@app/services/group-orders/group-orders.service';
 
 @Component({
   selector: 'app-owner-pre-order-page',
@@ -22,59 +14,50 @@ interface Participant {
   templateUrl: './owner-pre-order-page.component.html',
   styleUrl: './owner-pre-order-page.component.scss',
 })
-export class OwnerPreOrderPageComponent {
-  participants: Participant[] = [
-    {
-      id: '1',
-      name: 'Owner',
-      submitted: true,
-      items: [
-        { name: 'Margherita Pizza', price: 250, quantity: 2 },
-      ],
-    },
-    {
-      id: '2',
-      name: 'Andrii',
-      submitted: true,
-      items: [
-        { name: 'Caesar Salad', price: 180, quantity: 1 },
-        { name: 'Pasta', price: 220, quantity: 2 },
-      ],
-    },
-    {
-      id: '3',
-      name: 'Max',
-      submitted: true,
-      items: [{ name: 'Burger', price: 210, quantity: 1 }],
-    },
-  ];
+export class OwnerPreOrderPageComponent implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly groupOrdersService = inject(GroupOrdersService);
 
+  participants: GroupParticipant[] = [];
+  groupTotal = 0;
+
+  loading = true;
+  error = '';
   groupSubmitted = false;
 
-  participantTotal(participant: Participant): number {
-    return participant.items.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
-  }
+  ngOnInit(): void {
+    const groupReservationId =
+      this.route.snapshot.queryParamMap.get('groupReservationId');
 
-  get groupTotal(): number {
-    return this.participants.reduce(
-      (sum, participant) => sum + this.participantTotal(participant),
-      0
-    );
+    if (!groupReservationId) {
+      this.loading = false;
+      this.error = 'Missing groupReservationId in URL.';
+      return;
+    }
+
+    this.groupOrdersService.getGroupSessions(groupReservationId).subscribe({
+      next: (response) => {
+        this.participants = response.participants;
+        this.groupTotal = response.total;
+        this.loading = false;
+      },
+      error: () => {
+        this.error = 'Could not load group order. Check your login and reservation.';
+        this.loading = false;
+      },
+    });
   }
 
   get canSubmit(): boolean {
     return (
       !this.groupSubmitted &&
       this.participants.length > 0 &&
-      this.participants.every((participant) => participant.submitted)
+      this.participants.every((p) => p.isSubmitted)
     );
   }
 
   submitGroupOrder(): void {
-    if (!this.canSubmit) return;
-    this.groupSubmitted = true;
+    // Real POST API is not connected yet.
+    this.error = 'Group submission is not available yet.';
   }
 }

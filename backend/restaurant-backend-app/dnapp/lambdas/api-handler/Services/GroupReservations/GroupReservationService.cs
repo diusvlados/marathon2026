@@ -23,9 +23,7 @@ public class GroupReservationService(
     IReservationRepository reservationRepository,
     IGuestSessionRepository guestSessionRepository,
     IUserService userService,
-    ILocationService locationService,
-    IGuestSessionService guestSessionService,
-    IOrderService orderService) : IGroupReservationService
+    ILocationService locationService) : IGroupReservationService
 {
     private const string DefaultRestaurantName = "Green & Tasty";
 

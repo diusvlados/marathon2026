@@ -91,12 +91,13 @@ export const routes: Routes = [
 
 // Нова сторінка Owner
     {
-  path: 'owner-pre-order',
-  loadComponent: () =>
-    import('./pages/owner-pre-order-page/owner-pre-order-page.component').then(
-      (m) => m.OwnerPreOrderPageComponent
-    ),
-},
+    path: 'owner-pre-order',
+    canActivate: [AuthGuard],
+    data: { authorized: true },
+    loadComponent: () =>
+      import('./pages/owner-pre-order-page/owner-pre-order-page.component')
+        .then(m => m.OwnerPreOrderPageComponent),
+    },
 
     {
       path: 'guest-pre-order-expired',
