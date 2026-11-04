@@ -1,0 +1,69 @@
+# Python
+**/syndicate_venv/
+**/venv/
+**/__pycache__/
+*.pyc
+
+# Build output
+**/dist/
+**/bin/
+**/obj/
+**/.angular/
+
+# AWS credentials
+.aws/
+**/credentials
+**/credentials.json
+**/secrets.json
+*.pem
+*.key
+
+# Syndicate generated files
+**/.syndicate/
+**/bundles/
+
+# Terraform
+**/*.tfplan
+**/terraform.tfstate*
+# IDE
+.idea/
+
+# Terraform plans
+tfplan
+*.tfplan
+
+# Local configuration and generated artifacts
+**/syndicate_venv/
+**/.syndicate/
+**/bundles/
+**/node_modules/
+**/dist/
+**/bin/
+**/obj/
+**/coverage/
+
+# Secrets and local state
+.env*
+!.env.example
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+*.pem
+*.key
+# Terraform providers
+**/.terraform/
+**/.terraform.lock.hcl.backup
+
+# Terraform plan
+tfplan
+*.tfplan
+
+# Local files
+.idea/
+**/syndicate_venv/
+**/.syndicate/
+**/bundles/
+
+# Local AWS Syndicate configuration
+**/.syndicate-config-*/
