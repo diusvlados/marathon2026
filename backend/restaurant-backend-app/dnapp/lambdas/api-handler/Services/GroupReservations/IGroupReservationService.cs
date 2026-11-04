@@ -21,8 +21,8 @@ public interface IGroupReservationService
     Task<GetGroupInviteTokenResponse> GetGroupReservationInviteTokenAsync(
         string reservationId);
 
-    Task SubmitGroupOrderAsync(
-        string userId,
-        string groupReservationId,
-        ILambdaContext context);
+    // Task SubmitGroupOrderAsync(
+    //     string userId,
+    //     string groupReservationId,
+    //     ILambdaContext context);
 }
