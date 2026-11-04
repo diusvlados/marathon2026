@@ -185,6 +185,9 @@ public static class RouteRegistry
         ];
 
         List<RouteHandler> GetGuestAndGroupRoutes() => [
+            new RouteHandler(
+            new Route(HttpMethods.GET, "/guest/groups/{groupReservationId}/sessions"),
+            ActivatorUtilities.CreateInstance<GetAllSessionsHandler>(provider)),
             new RouteHandler(new Route(HttpMethods.POST, "/guest/sessions"), ActivatorUtilities.CreateInstance<CreateGuestSessionHandler>(provider)),
             new RouteHandler(new Route(HttpMethods.GET, "/guest/sessions/{guestSessionId}"), ActivatorUtilities.CreateInstance<GetGuestSessionHandler>(provider)),
             new RouteHandler(new Route(HttpMethods.POST, "/guest/sessions/{guestSessionId}/dishes"), ActivatorUtilities.CreateInstance<AddDishToGuestSessionHandler>(provider)),
