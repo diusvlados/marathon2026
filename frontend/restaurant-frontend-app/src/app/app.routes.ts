@@ -81,20 +81,31 @@ export const routes: Routes = [
         path: 'tables',
         component: TablesComponent,
       },
-      {
-        path: 'waiter-pre-order',
-        loadComponent: () =>
-          import('./pages/waiter-pre-order-page/waiter-pre-order-page.component').then(
-            (m) => m.WaiterPreOrderPageComponent
-          ),
-      },
-      {
-        path: 'guest-pre-order-expired',
-        loadComponent: () =>
-          import('./pages/guest-pre-order-expired-page/guest-pre-order-expired-page.component').then(
-            (m) => m.GuestPreOrderExpiredPageComponent
-          ),
-      },
+     {
+    path: 'waiter-pre-order',
+    loadComponent: () =>
+    import('./pages/waiter-pre-order-page/waiter-pre-order-page.component').then(
+      (m) => m.WaiterPreOrderPageComponent
+    ),
+    },
+
+// Нова сторінка Owner
+    {
+    path: 'owner-pre-order',
+    canActivate: [AuthGuard],
+    data: { authorized: true },
+    loadComponent: () =>
+      import('./pages/owner-pre-order-page/owner-pre-order-page.component')
+        .then(m => m.OwnerPreOrderPageComponent),
+    },
+
+    {
+      path: 'guest-pre-order-expired',
+      loadComponent: () =>
+        import('./pages/guest-pre-order-expired-page/guest-pre-order-expired-page.component').then(
+          (m) => m.GuestPreOrderExpiredPageComponent
+        ),
+    },
       {
         path: 'join/:token',
         loadComponent: () =>
